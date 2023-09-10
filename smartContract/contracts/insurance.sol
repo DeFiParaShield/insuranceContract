@@ -1,63 +1,105 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
+pragma abicoder v2;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@aave/core-v3/contracts/interfaces/IPool.sol";
+import "@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
-//This code has been developed in a rush, but it works. It can definitely be improved.
+interface IClaims {
+    function computePremium(uint256 quantity) external view returns (uint256);
+    function addCoverage( uint256 amount, address account ) external;
+    function reduceCoverage( uint256 amount, address account ) external;
+}
 
-contract bioERC20 is ERC20, ERC20Burnable {
-    uint256 initTokens = 100 ether;
-    uint256 public counter = 0;
-    mapping(address => bool) private firstStart;
-    mapping(address => uint256[]) private timeList;
-    mapping(address => string[]) private coordinates;
-    mapping(address => uint256[]) private costList;
+contract insurance is Ownable {
+    using SafeMath for uint256;
+    address aaveAddress;
+    IPool poolAave;
+    IPoolAddressesProvider private immutable poolAddressProvider;
+    uint256 totalSharesLoansPerAsset = 0;
+    address _addressClaimContract;
 
-    constructor() ERC20("Ecosystem Token", "EKOX") {}
+    address _USDC = 0xF14f9596430931E177469715c591513308244e8F;  //Fake USDC but this token works in AAVE
+    mapping(address => uint256) private assets;
+    mapping(address => uint256) private sharesLoans;
 
-    function isFirstTime(address accountId) public view returns (bool) {
-        return firstStart[accountId];
+    constructor() {
+        poolAddressProvider = IPoolAddressesProvider(0xeb7A892BB04A8f836bDEeBbf60897A7Af1Bf5d7F);
+        aaveAddress = poolAddressProvider.getPool();
+        poolAave = IPool(aaveAddress);
     }
 
-    //Cost would be nice to pass it via oracle setting a satellite feed
-    function buyLand(string memory coord, uint256 cost) public {
-        require(balanceOf(msg.sender) >= cost, "Insufficient balance");
-        _burn(msg.sender, cost);
-        coordinates[msg.sender].push(coord);
-        costList[msg.sender].push(cost);
-        timeList[msg.sender].push(block.timestamp);
-        counter += 1; //This needs to be fixed against overflow
+    function depositAsset(uint256 amount) public {
+        IERC20(_USDC).transferFrom(msg.sender, address(this), amount );
+        uint256 discount = IClaims(_addressClaimContract).computePremium( amount );
+        amount -= discount;
+        IERC20(_USDC).approve(_addressClaimContract, discount);
+        IClaims(_addressClaimContract).addCoverage( amount, msg.sender );
+        assets[msg.sender] += amount;
+        supplyLendToken( msg.sender, amount );
     }
 
-    //Cost would be nice to pass it via oracle setting a satellite feed
-    //Verification to the size of the arrays needs to be implemented
-    //This is highly unsecured, but could not fix a bug on the front end.
-    function claimYield(uint256 amount) public {
-        require( amount > 0 );
-        if (amount > 0) {
-            _mint(msg.sender, amount);
+    function withdrawAsset(uint256 percentage) public {
+        uint256 finalAmount = withdrawLendToken( msg.sender, percentage );
+        IClaims(_addressClaimContract).reduceCoverage( finalAmount, msg.sender );
+        assets[msg.sender] -= finalAmount;
+        IERC20(_USDC).transfer( msg.sender, finalAmount );
+    }
+
+    function supplyLendToken(address account, uint256 amount) private {
+        require( IERC20(_USDC).approve(aaveAddress, amount), "This contract has not enough tokens" );
+        poolAave.supply(_USDC, amount, address(this), 0);
+
+        if ( totalSharesLoansPerAsset == 0 ) {
+            sharesLoans[account] += amount;
+            totalSharesLoansPerAsset += amount;
+        } else {
+            address aTokenAddress = (poolAave.getReserveData(_USDC)).aTokenAddress;
+            uint256 currentBalance = IERC20(aTokenAddress).balanceOf( address(this) );
+            uint256 amountShares = Math.mulDiv( amount, totalSharesLoansPerAsset, currentBalance );
+            sharesLoans[account] += amountShares;
+            totalSharesLoansPerAsset += amountShares;
         }
+
     }
 
-    function claimStartingTokens() public {
-        require(firstStart[msg.sender] == false, "Already Initialized");
-        firstStart[msg.sender] = true;
-        _mint(msg.sender, initTokens);
+    function withdrawLendToken(address account, uint256 percentage) private returns (uint256){
+        require(sharesLoans[account] > 0, "User has not provided this token for lending");
+
+        uint256 amountSharesUser = sharesLoans[account];
+        address aTokenAddress = (poolAave.getReserveData(_USDC)).aTokenAddress;
+        uint256 currentBalance = IERC20(aTokenAddress).balanceOf(address(this));
+
+        uint256 amountAsset = Math.mulDiv( amountSharesUser * percentage, currentBalance, totalSharesLoansPerAsset * 1000);
+        uint256 amountShares = Math.mulDiv( amountSharesUser, percentage, 1000);
+
+        poolAave.withdraw(_USDC, amountAsset, address(this));
+        sharesLoans[account] -= amountShares;
+        totalSharesLoansPerAsset -= amountShares;
+
+        return amountAsset;
     }
 
-    function getCoordinates(address accountId, uint256 index) public view returns (string memory) {
-        uint256 size = costList[accountId].length;
-        require(index < size, "Index out of boundaries");
-        return coordinates[accountId][index];
+    function assetsOf(address account) public view returns (uint256) {
+        return assets[account];
     }
 
-    function getCostList(address accountId) public view returns (uint256[] memory) {
-        return costList[accountId];
+    function sharesLoansOf(address account) public view returns (uint256) {
+        return sharesLoans[account];
     }
 
-    function getTimeList(address accountId) public view returns (uint256[] memory) {
-        return timeList[accountId];
+    function getATokenAddress() public view returns (address) {
+        return poolAave.getReserveData(_USDC).aTokenAddress;
     }
 
+    //This will be change by a DAO in the future.
+    function changeAddressClaimContract(address newAddress) public onlyOwner {
+        _addressClaimContract = newAddress;
+    }
+
+    receive() external payable {}
 }
