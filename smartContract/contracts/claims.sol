@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 //This code has been developed in a rush, but it works. It can definitely be improved.
-
 contract claims is Ownable {
     address _addressInsuranceContract;
     address _USDC = 0xF14f9596430931E177469715c591513308244e8F;  //Fake USDC but this token works in AAVE
