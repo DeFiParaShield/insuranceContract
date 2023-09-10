@@ -23,12 +23,14 @@ contract insurance is Ownable {
     uint256 totalSharesLoansPerAsset = 0;
     address _addressClaimContract;
 
-    address _USDC = 0xF14f9596430931E177469715c591513308244e8F;  //Fake USDC but this token works in AAVE
+//    address _USDC = 0xF14f9596430931E177469715c591513308244e8F;  //Fake USDC but this token works in AAVE: Polygon
+    address _USDC = 0x2C9678042D52B97D27f2bD2947F7111d93F3dD0D; //Fake USDC but this works in AAVE: Scroll Sepolia
     mapping(address => uint256) private assets;
     mapping(address => uint256) private sharesLoans;
 
     constructor() {
-        poolAddressProvider = IPoolAddressesProvider(0xeb7A892BB04A8f836bDEeBbf60897A7Af1Bf5d7F);
+//        poolAddressProvider = IPoolAddressesProvider(0xeb7A892BB04A8f836bDEeBbf60897A7Af1Bf5d7F); //Polygon
+        poolAddressProvider = IPoolAddressesProvider(0x52A27dC690F8652288194Dd2bc523863eBdEa236); //Scroll Sepolia
         aaveAddress = poolAddressProvider.getPool();
         poolAave = IPool(aaveAddress);
     }
@@ -85,7 +87,14 @@ contract insurance is Ownable {
     }
 
     function assetsOf(address account) public view returns (uint256) {
-        return assets[account];
+        uint256 amountSharesUser = sharesLoans[account];
+        address aTokenAddress = (poolAave.getReserveData(_USDC)).aTokenAddress;
+        uint256 currentBalance = IERC20(aTokenAddress).balanceOf(address(this));
+        uint256 amountAsset = 0;
+        if ( totalSharesLoansPerAsset > 0 ) {
+            amountAsset = Math.mulDiv( amountSharesUser, currentBalance, totalSharesLoansPerAsset );
+        }
+        return amountAsset;
     }
 
     function sharesLoansOf(address account) public view returns (uint256) {

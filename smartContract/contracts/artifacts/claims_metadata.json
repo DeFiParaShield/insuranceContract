@@ -302,11 +302,11 @@
 			]
 		},
 		"contracts/claims.sol": {
-			"keccak256": "0x433758b295ca9d39810a87644b38d90a22b94e02ff34d57e20fd83ffbd38cd2b",
+			"keccak256": "0xbab665d502ac679c768acbb968525d579f28b5d1079d22fb2bc78f6823a38270",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9374852f086a916568392b413f3b996f6f9eba337a375a7cc80a3d655d8aae6",
-				"dweb:/ipfs/Qmamt1UqPxVTMx1BQ8SbC5f1j9mXvJYhnmUoqVPtm8Lktk"
+				"bzz-raw://99d2e8acca91625700e452fbb3f78928a2a21d3f291f5befef22186026611497",
+				"dweb:/ipfs/QmWWVRueQUCS1HMCqUMdfebrMPWnqvTw6vUvSpDScBorK6"
 			]
 		}
 	},

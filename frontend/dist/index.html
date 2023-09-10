@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-9TZEQ2420V"></script>
+  <script>window.dataLayer = window.dataLayer || [];
+function gtag() {
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+gtag('config', 'G-9TZEQ2420V');</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.6d47dbe5.png">
+  <link rel="apple-touch-icon" href="/favicon.6d47dbe5.png">
+  <title>DeFiParaShield</title>
+  <link rel="stylesheet" href="/global.e50bbfba.css?v=1.238">
+  <link rel="stylesheet" href="/table.a401722f.css?v=1.238">
+<script src="/global.e50bbfba.js"></script><script src="/table.a401722f.js"></script></head>
+
+<body>
+  <a href="https://www.wedefin.com">
+    <img class="logo_full" src="/logo.e9a9c890.png" alt="Serpius" style="height: 60px; position: absolute; margin: 1em; left: 0px; top: 0px; vertical-align: middle;">
+  </a>
+  <a href="https://www.wedefin.com">
+    <img class="logo_mobile" src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 60px; position: absolute; margin: 1em; left: 0px; top: 0px; vertical-align: middle;">
+  </a>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <main id="signed-out-flow" style="display: none; text-align: center; vertical-align: center; padding-top: 22vh; height: calc(100vh - 60px);">
+    <p style="text-align: center; margin-bottom: 6vh; text-align: center; margin: auto; margin-bottom: 2em;">Select your
+      wallet to connect: </p>
+    <div id="sign-in-button" class="wallet_selector">
+      <img src="/near_solid_black.540ab54b.png" alt="near" style="height: 40px; width: auto; margin: auto;">
+      <label style="height: auto; width: auto; margin: auto; margin-bottom: 10px; margin-top: calc(-11px - 0.3vh); font-size: calc(11px + 0.3vh); padding: 0; cursor: pointer;">NEAR
+        Wallet</label>
+    </div>
+    <div id="sign-in-button-mynear" class="wallet_selector">
+      <img src="/mynearwallet.73810593.png" alt="Serpius" style="height: 40px; width: auto; margin: auto;">
+      <label style="height: auto; width: auto; margin: auto; margin-bottom: 10px; margin-top: calc(-11px - 0.3vh); font-size: calc(11px + 0.3vh); padding: 0; cursor: pointer;">MyNearWallet</label>
+    </div>
+    <div id="sign-in-button-metamask" class="wallet_selector_polygon" style="background-image: url(/metamask_logo_desktop.8eca5d1a.png); background-position: 0 0; background-size: 45%; background-repeat: no-repeat;">
+      <img id="img_metamask" src="/metamask_logo.5e7ac2d3.svg" alt="Serpius" style="height: 80%; width: auto; margin: auto;">
+    </div>
+    <!-- <div id="sign-in-button-sender" class="wallet_selector">
+      <img src="/assets/sender_icon.png" alt="Serpius" style="height: 40px; width: auto; margin: auto;">
+    </div> -->
+    <!-- <img src="/assets/serpius_near_color.png" alt="near" style="height: 60px; margin: auto;"> -->
+    <!-- <p style="text-align: center; margin-top: 2.5em">
+      <button id="sign-in-button" style="height: 30px;">Connect</button>
+    </p> -->
+    <p id="back_from_wallet" style="text-align: center; margin-bottom: 6vh; text-align: center; margin: auto; margin-bottom: 2em; margin-top: 2em; cursor: pointer;">
+      <i class="fa fa-arrow-left" aria-hidden="true" style="padding-right: 0.5em;"></i>Back
+    </p>
+
+    <footer style="margin-top: 0vh; font-size: 13px; text-align: center; color: var(--gray); bottom: calc(60px + 0.3vh); position: absolute; width: 100vw; left: 0;">
+      <div style="font-size: 30px; vertical-align: middle; margin-bottom: 1vh;">
+        <a style="color: var(--gray);" href="https://twitter.com/wedefin"><i class="fa fa-twitter-square" style="margin-right: 20px;"></i></a>
+        <a style="color: var(--gray);" href="https://www.linkedin.com/company/wedefin"><i class="fa fa-linkedin-square" style="margin-right: 20px;"></i></a>
+        <a style="color: var(--gray);" href="https://docs.wedefin.com"><i class="fa fa-book" aria-hidden="true"></i></a>
+      </div>
+      <p2>© copyright 2023 | All rights reserved. </p2>
+    </footer>
+  </main>
+
+  <div id="blocker" style="z-index: 200; background-color: rgba(0, 0, 0, 0.4); width: 100%; height: 100vh; position: fixed; left: 0; top: 0; display: none; padding-top: calc(50vh - 30px); text-align: center;">
+    <img src="/favicon.6d47dbe5.png" alt="Serpius" style="height: 60px; margin: 0px;">
+    <img src="/loader.f881bb11.gif" alt="loading" style="height: 10px; margin-bottom: 25px; margin-left: 13px; margin-right: 10px;">
+    <!-- <img id="blocker_img_near" src="/assets/near_solid_black.png" alt="near" style="height: 60px; margin: 0px;"> -->
+    <img id="blocker_img_near" src="/near_solid_black.540ab54b.png" alt="near" style="height: 60px; margin: 0px;">
+    <img id="blocker_img_polygon" src="/polygon_bw.4443e609.png" alt="polygon" style="height: 60px; margin: 0px;">
+  </div>
+
+  <div id="blocker_transaction" style="z-index: 100; background-color: rgba(0, 0, 0, 0.5); width: 100%; height: 100vh; position: fixed; left: 0; top: 0; padding-top: calc(50vh - 150px); text-align: center; display: none;">
+
+    <div class="popup_transfer" id="div_deposit">
+      <h2 id="label_popup">Deposit NEAR</h2>
+      <input type="number" id="fname" name="fname" class="text_amount" placeholder="amount (NEAR)" onkeypress="return validate_text()" autocomplete="off" onpaste="return false;" ondrop="return false;" autocapitalize="off" spellcheck="false" autocorrect="off">
+      <div class="btn-group-perc">
+        <input type="button" class="button_small_perc" id="d25" value="25%">
+        <input type="button" class="button_small_perc" id="d50" value="50%">
+        <input type="button" class="button_small_perc" id="d75" value="75%">
+        <input type="button" class="button_small_perc" id="d100" value="100%">
+      </div>
+      <div class="label_info">
+        <label id="pop_balance" style="font-size: 10px; text-align: right;"> Balance: 0 NEAR</label>
+      </div>
+      <div class="label_info">
+        <label style="font-size: 10px; text-align: right;"> Fees: <del>2%</del> + Gas + DEX </label>
+      </div>
+      <div class="label_info_button">
+        <input type="button" class="button_buy_sell" id="cancel" value="Cancel" onclick="cancel_transaction()">
+      </div>
+      <div class="label_info_button" style="text-align: right;">
+        <input type="button" class="button_buy_sell" id="approve" value="Submit" disabled="">
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="signed-in-flow" style="display: none; height: calc(100% - 30px);">
+    <button class="button" style="float:right; vertical-align: middle; margin-top: 0px; height: 30px;" id="sign-out-button">
+      Disconnect
+    </button>
+    <a id="link_wallet" href="https://wallet.testnet.near.org">
+      <label class="pointer" id="account_id" style="display:inline-flex; float:right; align-items: center; padding-left: 0.5em; padding-right: 0.75em; background-color: #2361ae85; color: white; margin-top: 0px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; height: 30px;">
+      </label>
+    </a>
+    <div style="display: inline-block; width: 100%; text-align: right; background-color:rgba(0, 0, 0, 0); color: white; margin: 0px; height: 25px; vertical-align: middle; align-items: center; margin-top: 1vh;">
+      <label id="network" style="display:inline-flex; background-color: rgb(200, 37, 26, 0.3); color: white; border-radius: 5px; height: 100%; font-size: 12px; text-align:center; vertical-align: middle; align-items: center; padding: 1em; margin-right: 10px;">
+        Testnet
+      </label>
+      <!-- Rounded switch -->
+      <label class="switch">
+        <input type="checkbox" id="button_network" disabled="">
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="hwrap-message" style="display: none;">
+      <div class="hmove-message">
+        <div class="hitem-message"></div>
+        <div class="hitem-message"></div>
+      </div>
+    </div>
+
+    <main id="account">
+      <h2> Your Assets </h2>
+      <div class="calculation-box" style="vertical-align: middle;">
+        <p> Deposits </p>
+        <label class="Biglabel" id="l_balance"></label>
+        <label id="depo_near" class="p" style="font-size: 14px; margin-left: 20px;"></label>
+        <button id="btn_withdraw" class="btn_action" disabled="">
+          Withdraw
+        </button>
+      </div>
+      <div id="box2" class="calculation-box calculation-box-near" style="vertical-align: middle;">
+        <p id="label_native_balance">Balance Wallet</p>
+        <label class="Biglabel" id="l_balance_native"></label>
+        <label id="total_usd" class="p" style="font-size: 14px; margin-left: 20px;"></label>
+        <button id="btn_deposit" class="btn_action" disabled="">
+          Deposit
+        </button>
+        <label id="contract_label" style="position:absolute; font-size: 10px; margin: 0px 0px 1em calc(13px + 0.3vh); text-align: left; bottom: 5px; display: none;">
+          <strong>Contract:</strong></label>
+      </div>
+      <div class="calculation-box" style="vertical-align: middle;">
+        <p> Interest Rate </p>
+        <label class="Biglabel" id="ser_balance"></label>
+        <label id="total_ser" class="p" style="font-size: 14px; margin-left: 20px;">Premium Cost: </label>
+      </div>
+
+      <form style="display: none;">
+        <fieldset id="fieldset">
+          <div style="display: flex">
+            <input style="flex: 1" autocomplete="off" id="greeting" data-behavior="greeting">
+            <button disabled="" style="border-radius: 0 10px 10px 0">Save</button>
+          </div>
+        </fieldset>
+      </form>
+      <div class="text-box" style="text-align: justify; font-size: 10px; display: inline-flex; margin-top: 3vh; visibility: hidden;">
+        <p2>
+          The assets in the portfolio correspond to their wrapped versions in the NEAR protocol or Polygon Network,
+          respectively.
+          For instance, BTC stands for the wBTC token, which is pegged to BTC, so de-pegging risk although very unlikely
+          is still possible.
+          We use <a href="https://www.ref.finance/">Ref.finance</a> (NEAR Protocol) and <a href="https://app.uniswap.org/">Uniswap v3</a> (Polygon) as Decentralized EXchanges (DEXs), and <a href="https://app.burrow.cash/">Burrow Cash</a> (NEAR protocol) and <a href="https://aave.com/">AAVE v3</a>
+          (Polygon) as lending protocols for earning yield. Assets on the NEAR protocol are deposited in the smart
+          contract of Ref.finance to ease rebalancing transactions, while the assets in
+          Polygon are stored in our smart contract. This is a beta version dApp, so you should use it at your own risk.
+          Wedefin is not a financial advisor. Risks when using DeFi protocols include smart contracts
+          vulnerabilities and volatility. Do your own research before investing.
+        </p2>
+      </div>
+      <footer style="margin-top: 3vh; font-size: 13px; text-align: center; color: var(--gray); vertical-align: middle;">
+        <div style="font-size: 30px; vertical-align: middle; margin-bottom: 1vh; visibility: hidden;">
+          <a style="color: var(--gray);" href="https://twitter.com/wedefin"><i class="fa fa-twitter-square" style="margin-right: 20px;"></i></a>
+          <a style="color: var(--gray);" href="https://www.linkedin.com/company/wedefin"><i class="fa fa-linkedin-square" style="margin-right: 20px;"></i></a>
+          <a style="color: var(--gray);" href="https://docs.wedefin.com"><i class="fa fa-book" aria-hidden="true"></i></a>
+        </div>
+        <p2 stype="display:inline-block; margin: auto; vertical-align: middle; padding: 0;">© copyright 2023 | All
+          rights reserved | Powered by </p2>
+        <img class="logo_full" src="/logo.e9a9c890.png" alt="Serpius" style="display:inline-block; height: 24px; margin: auto; margin-top: 10px; margin-bottom: 12px; vertical-align: middle; padding: 0;">
+      </footer>
+    </main>
+  </div>
+
+  <aside data-behavior="notification" style="display: none;">
+    <a target="_blank" href="https://explorer.testnet.near.org/accounts/"></a>
+    called method: 'set_greeting' in contract:
+    <a target="_blank" href="https://explorer.testnet.near.org/accounts/"></a>
+    <footer>
+      <div>✔ Succeeded</div>
+      <div>Just now</div>
+    </footer>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/jquery.tablesorter.min.js"></script>
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script> -->
+  <script src="/src.e31bb0bc.js?v=1.238"></script>
+
+  <script>function cancel_transaction() {
+  document.getElementById("blocker_transaction").style.display = "none";
+  document.getElementById("div_deposit").style.display = "none";
+  var submit = document.querySelectorAll(".button_small_perc");
+  submit.forEach(function (btn) {
+    btn.style.backgroundColor = "var(--light-gray)";
+    btn.style.color = "#8b949b";
+  });
+  document.getElementById("fname").value = "";
+  document.getElementById("approve").disabled = true;
+}
+$(document).ready(function () {
+  $(function () {
+    $('#keywords').tablesorter();
+  });
+  window.is_mobile = false;
+  if ($('#vote_div_0_1').css('display') == 'none' || $('#vote_div_0_2').css('display') == 'none') {
+    window.is_mobile = true;
+  }
+  try {
+    if (window.getCookie("network") == 1) {
+      document.getElementById("button_network").checked = true;
+      document.getElementById("button_network").onclick();
+    } else {
+      document.getElementById("button_network").checked = false;
+      document.getElementById("button_network").onclick();
+    }
+  } catch (_unused) {}
+  ;
+});
+var submit = document.querySelectorAll(".button_small_perc");
+submit.forEach(function (btn) {
+  btn.addEventListener("click", amount_perc);
+});
+function amount_perc() {
+  var submit = document.querySelectorAll(".button_small_perc");
+  submit.forEach(function (btn) {
+    btn.style.backgroundColor = "var(--light-gray)";
+    btn.style.color = "#8b949b";
+  });
+  for (var i = 0; i < submit.length; i++) {
+    submit[i].style.backgroundColor = "#030303";
+    submit[i].style.color = "white";
+    if (submit[i] == this) {
+      if (window.actual_action === "BUY") {
+        document.getElementById("fname").value = Math.floor(window.wallet_balance * (i + 1) * 1000000 / submit.length) / 1000000;
+      } else if (window.actual_action === "SELL") {
+        document.getElementById("fname").value = Math.floor(window.protocol_balance * (i + 1) * 1000000 / submit.length) / 1000000;
+      }
+      if (document.getElementById("fname").value > 0 && window.contract_matic_exist == true) {
+        document.getElementById("approve").disabled = false;
+      }
+      break;
+    }
+  }
+}
+function validate_text() {
+  if (document.getElementById("fname").value.indexOf('.') === -1) {
+    return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46;
+  } else {
+    return event.charCode >= 48 && event.charCode <= 57;
+  }
+}
+var textarea = document.getElementById("fname");
+textarea.addEventListener("input", function (event) {
+  var submit = document.querySelectorAll(".button_small_perc");
+  submit.forEach(function (btn) {
+    btn.style.backgroundColor = "var(--light-gray)";
+    btn.style.color = "#8b949b";
+  });
+  var mytext = textarea.value; //You already have the element as a variable
+  if (window.actual_action === "BUY") {
+    if (textarea.value <= window.wallet_balance && textarea.value > 0 && window.contract_matic_exist == true) {
+      document.getElementById("approve").disabled = false;
+    } else {
+      document.getElementById("approve").disabled = true;
+    }
+  } else if (window.actual_action === "SELL") {
+    if (textarea.value <= window.protocol_balance && textarea.value > 0 && window.contract_matic_exist == true) {
+      document.getElementById("approve").disabled = false;
+    } else {
+      document.getElementById("approve").disabled = true;
+    }
+  }
+});</script>
+
+</body>
+
+</html>

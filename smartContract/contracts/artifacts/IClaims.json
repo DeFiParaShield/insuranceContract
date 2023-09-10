@@ -49,21 +49,65 @@
 		},
 		"gasEstimates": null,
 		"methodIdentifiers": {
-			"getAPY()": "d2cbf7ad"
+			"addCoverage(uint256,address)": "f75f6029",
+			"computePremium(uint256)": "86b82254",
+			"reduceCoverage(uint256,address)": "a3df437b"
 		}
 	},
 	"abi": [
 		{
-			"inputs": [],
-			"name": "getAPY",
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "account",
+					"type": "address"
+				}
+			],
+			"name": "addCoverage",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "quantity",
+					"type": "uint256"
+				}
+			],
+			"name": "computePremium",
 			"outputs": [
 				{
-					"internalType": "uint128",
+					"internalType": "uint256",
 					"name": "",
-					"type": "uint128"
+					"type": "uint256"
 				}
 			],
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "account",
+					"type": "address"
+				}
+			],
+			"name": "reduceCoverage",
+			"outputs": [],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

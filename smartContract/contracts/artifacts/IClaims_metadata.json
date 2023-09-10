@@ -6,16 +6,58 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"name": "getAPY",
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "addCoverage",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "quantity",
+						"type": "uint256"
+					}
+				],
+				"name": "computePremium",
 				"outputs": [
 					{
-						"internalType": "uint128",
+						"internalType": "uint256",
 						"name": "",
-						"type": "uint128"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "reduceCoverage",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -32,7 +74,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/yieldSeeker.sol": "IClaims"
+			"contracts/insurance.sol": "IClaims"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -46,84 +88,76 @@
 		"remappings": []
 	},
 	"sources": {
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/executable/AxelarExecutable.sol": {
-			"keccak256": "0x2a88d046f9cdc664afc7b788d6c5b534d361b46fb45ab7abf721a58dd813359b",
-			"license": "MIT",
+		"@aave/core-v3/contracts/interfaces/IPool.sol": {
+			"keccak256": "0xbfd2077251c8dc766a56d45f4b03eb07f3441323e79c0f794efea3657a99747f",
+			"license": "AGPL-3.0",
 			"urls": [
-				"bzz-raw://4ac48adfa686aa78e2474bcb72f49791b631bd5dd15e0991ccd91b9660caacdb",
-				"dweb:/ipfs/QmQ7uFDHagPUDq93T4vaeANzLE8J8Ch3jcdTAdNT7kkfEW"
+				"bzz-raw://c6ff6221de0ea877932c73c0b99d3e4535f293053ae44f9f9d6b9d265e9af2f6",
+				"dweb:/ipfs/QmSTaEKrhz1xNVnx4oBzWw8DenYPShVzJoP1A9GTEWkAzX"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarExecutable.sol": {
-			"keccak256": "0x4279ef3b4fe5e7082f39c665d4aeddc6d84fcc6fadaacd1d8ae604ba6146b8e6",
-			"license": "MIT",
+		"@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol": {
+			"keccak256": "0x33d4308d9407b4ee2297fc4ba5acce1a96a6c658189e2778a4f6b90e032fb3b5",
+			"license": "AGPL-3.0",
 			"urls": [
-				"bzz-raw://afee5b713aa8fb3bf1b467706701337461e71c12afe35bc2f8e5371674b9dbc5",
-				"dweb:/ipfs/QmVT92dDB9eDVcwnVYEfofZ1az1b5Fy1MaqGBpSroSZjwB"
+				"bzz-raw://978336a2a40229ccc7749344be890862ea12e17e9fffe5bb977ba3841de07b5a",
+				"dweb:/ipfs/QmScNrQfDSPg1afJmkCty6fZkETUrWTmEXWeTmHoe7mSqa"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGasService.sol": {
-			"keccak256": "0x79ea1d76ed952ddf0dd052c7a6dc5b24af198addcb91da20ead5145c697ecb39",
-			"license": "MIT",
+		"@aave/core-v3/contracts/protocol/libraries/types/DataTypes.sol": {
+			"keccak256": "0xff95adc41b2bbda0c08208e66c1e2fd0d99fa6d8f937667c2b366ddf08f10eeb",
+			"license": "BUSL-1.1",
 			"urls": [
-				"bzz-raw://4f84a4fb3853b3f3b612bd2649b80d27dbcd429a7549319753406c83fa42ea8b",
-				"dweb:/ipfs/QmcGqGujSpGwxKhT141X9Kj46zXomkV8RxBuVT6rWQDns3"
+				"bzz-raw://734ac1a253d41ace0fe411359248a1534e530b85b3c0c9fe37931ee11580dbc6",
+				"dweb:/ipfs/QmNSm1bqFo2x8EghUyShK34bU1esDeLCw1ZWPoRZwcoVvM"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IAxelarGateway.sol": {
-			"keccak256": "0xb31fdd99a622f9690b6a6eb969831d8021f49eb7c4729bf68e20da6266d4d7b3",
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xba43b97fba0d32eb4254f6a5a297b39a19a247082a02d6e69349e071e2946218",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bb664620b2bd7ec764f1e931543680835fa6a5fa980d2725b065243a020080a5",
-				"dweb:/ipfs/QmTcBkkBMYJQRf2WAFe5DdJ5HDtiKSuPDDLvv9ZTcjqhQC"
+				"bzz-raw://fc980984badf3984b6303b377711220e067722bbd6a135b24669ff5069ef9f32",
+				"dweb:/ipfs/QmPHXMSXj99XjSVM21YsY6aNtLLjLVXDbyN76J5HQYvvrz"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IContractIdentifier.sol": {
-			"keccak256": "0x21a94655f7f1ed3d7188bd38ce6187892c615b80f9a74e123cbc38113d855a35",
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e7e1f30e159d40a9f8431c26955a584507bc23a30f19380c723acdb4182ba7c1",
-				"dweb:/ipfs/QmXb965di5pU3m3W36k19ZX8m6qCDaEi1jEt6NocqrGPXj"
+				"bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+				"dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IERC20.sol": {
-			"keccak256": "0xb77ad755f4eade679279d5ca12b6926595e41e17387e143530f4fb57672d58d7",
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b0d01d0810d12dba98839b084440ab9b52e04d94e9431a6ffadabb1651d0f100",
-				"dweb:/ipfs/Qme9KLMtbmNvsAj2giGTzNFKAymkMJq88Ef445pLiawKWa"
+				"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IGovernable.sol": {
-			"keccak256": "0x686c534975bfc4e00f89be5e4a779a41a63f7c5fc204429c839bcdbf09584fd0",
+		"@openzeppelin/contracts/utils/math/Math.sol": {
+			"keccak256": "0xe4455ac1eb7fc497bb7402579e7b4d64d928b846fce7d2b6fde06d366f21c2b3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://62a095681384a2be0b6ecb31729ff6507d663559d1f3d0dd5d1f6ba8ac6a1c95",
-				"dweb:/ipfs/Qmf8FZX4w3e49LsF1Vnn7u63w8KeuLiHVAKCmbgGdfuTG4"
+				"bzz-raw://cc8841b3cd48ad125e2f46323c8bad3aa0e88e399ec62acb9e57efa7e7c8058c",
+				"dweb:/ipfs/QmSqE4mXHA2BXW58deDbXE8MTcsL5JSKNDbm23sVQxRLPS"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IOwnable.sol": {
-			"keccak256": "0x5cb5691c9293e3011e1b133485411e8933ca1e110f2436a663df12991d134bf7",
+		"@openzeppelin/contracts/utils/math/SafeMath.sol": {
+			"keccak256": "0x58b21219689909c4f8339af00813760337f7e2e7f169a97fe49e2896dcfb3b9a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cdbeb0f7ec37155f976a3bdd9f13055c80f1b2d17043740d387403cb8d65a096",
-				"dweb:/ipfs/QmXKLyWetJGgwUuEtexjPxfeZdgUywhrHS4898fQSFkC5y"
+				"bzz-raw://ef8e012e946dec20e59f2d4446f4b44bb098f3fa8bac103b1b5112fff777447b",
+				"dweb:/ipfs/QmVTooKWcLkJ9W68yNX4MgdrbAKiAXwuRN9A7f4NkdcdtQ"
 			]
 		},
-		"@axelar-network/axelar-gmp-sdk-solidity/contracts/interfaces/IUpgradable.sol": {
-			"keccak256": "0x17fae8b669cd0a27f7ccff57e9c02fefa59c7eb5b650fee9641939c80af10c65",
+		"contracts/insurance.sol": {
+			"keccak256": "0x206eb2b869df229ff9d2f80a412baa3d71d9a4206b51dd6b829fabc09fd64385",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c7136ed73dcf0c69ef57a9d91415b6833a497772a2e6c53aaf74cefbeb7dceec",
-				"dweb:/ipfs/QmUBvLiyZqNZxk3MNNSSPF7ELBTSPzB5vq1LdriXKkzhzu"
-			]
-		},
-		"contracts/yieldSeeker.sol": {
-			"keccak256": "0xbe09dcabc46a63ddd43087fc72a8b9061f3dde8bfb141e3999e65bbeda1ac4f3",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://596114c28d97d47a5ef21a3ea0b24fa2f31681b281ca8e23602db4566c6c8484",
-				"dweb:/ipfs/QmcJRycMu6NaHf1M8aB75Mm2idmFG1YJ1BCXPJT8G2witW"
+				"bzz-raw://a59c87c5f1432723031c03beac1d239ebfb19bce641a2429a3c26e50614ae926",
+				"dweb:/ipfs/QmYureCZe9f4e7Q3HuA8FiEdDX52UQMSmnPXZYYBUFTuXf"
 			]
 		}
 	},
